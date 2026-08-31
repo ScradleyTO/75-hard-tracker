@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>75 Hard Tracker</title>
+
+  <!-- PWA manifest (modern browsers / Android) -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#111116" />
+
+  <!-- iOS home-screen support -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="75 Hard" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/favicon.png" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Hidden file input for progress photos (opens camera directly on iOS) -->
+  <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none" />
+
+  <script src="js/db.js"></script>
+  <script src="js/schedule.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

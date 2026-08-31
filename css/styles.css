@@ -1,0 +1,348 @@
+:root {
+  --bg: #111116;
+  --card: #1b1b22;
+  --card-border: #2a2a34;
+  --text: #f2f2f5;
+  --text-dim: #9797a3;
+  --accent: #d62828;
+  --accent-dim: #7a1919;
+  --good: #2ea043;
+  --warn: #e8a33d;
+  --radius: 14px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1, h2, h3 { margin: 0; }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px 20px;
+}
+
+.header .title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.day-badge {
+  text-align: right;
+}
+
+.day-badge .day-num {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.day-badge .day-of {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.stat-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.stat-pill {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.stat-pill .num {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.stat-pill .label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.card h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.schedule-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  padding: 6px 0;
+}
+
+.schedule-row .sess-label {
+  color: var(--text-dim);
+  margin-right: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.checkbox {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 8px;
+  border: 2px solid var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.checkbox.checked {
+  background: var(--good);
+  border-color: var(--good);
+  color: white;
+}
+
+.checkbox.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.checklist-item .item-body {
+  flex: 1;
+}
+
+.checklist-item .item-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.checklist-item .item-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+input.pages-input {
+  width: 56px !important;
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 4px 6px;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.photo-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary { background: var(--accent); color: white; }
+.btn-secondary { background: var(--card-border); color: var(--text); }
+.btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--card-border); }
+.btn-block { display: block; width: 100%; }
+.btn:disabled { opacity: 0.4; cursor: default; }
+
+.progress-bar-track {
+  background: var(--bg);
+  border-radius: 8px;
+  height: 10px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.progress-bar-fill {
+  background: var(--good);
+  height: 100%;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.history-row .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--card-border);
+}
+.history-row .dot.complete { background: var(--good); }
+.history-row .dot.incomplete { background: var(--accent); }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.modal-box {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.modal-box.danger { border-color: var(--accent); }
+
+.modal-box h2 {
+  font-size: 18px;
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 10px;
+}
+
+.modal-box p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.modal-actions .btn { flex: 1; }
+
+.fail-banner {
+  border: 2px solid var(--accent);
+}
+
+.fail-banner .fail-title {
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.book-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.book-row:last-child { border-bottom: none; }
+
+input[type=text], input[type=number] {
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: 12px;
+  color: var(--text-dim);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.complete-screen {
+  text-align: center;
+  padding: 40px 10px;
+}
+
+.complete-screen .big {
+  font-size: 48px;
+}
