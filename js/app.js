@@ -266,6 +266,21 @@ async function acknowledgeFailure() {
   await doReset();
 }
 
+function attemptHasProgress(attempt) {
+  return Object.values(attempt.days).some((d) => d.outdoor || d.second || d.diet || d.water || d.reading || d.photo);
+}
+
+async function saveStartDate(newDateISO) {
+  if (!newDateISO) return;
+  const attempt = getCurrentAttempt();
+  attempt.startDate = newDateISO;
+  attempt.days = {};
+  checkForFailureOrCompletion();
+  ui.modal = null;
+  await saveState(state);
+  render();
+}
+
 async function addBook(title, author, totalPages) {
   const book = { id: state.nextBookId, title, author, totalPages: totalPages || null, currentPage: 0, finished: false };
   state.books.push(book);
@@ -413,6 +428,8 @@ function handleClick(e) {
     "toggle-history": () => { ui.showHistory = !ui.showHistory; render(); },
     "toggle-gallery-all": () => { ui.galleryAll = !ui.galleryAll; render(); },
     "start-new-attempt": () => doReset(),
+    "open-set-start-date": () => { ui.modal = { type: "set-start-date" }; render(); },
+    "save-start-date": () => saveStartDate(document.getElementById("start-date-input").value),
   };
   if (actions[action]) actions[action]();
 }
@@ -438,6 +455,12 @@ function render() {
   }
 
   const dayNumber = currentDayNumber(attempt);
+
+  if (dayNumber < 1) {
+    app.innerHTML = renderNotStartedScreen(attempt, dayNumber);
+    return;
+  }
+
   const rec = getDayRecord(attempt, dayNumber);
   const streak = computeStreak(attempt);
   const today = scheduleForDate(new Date());
@@ -445,6 +468,7 @@ function render() {
 
   app.innerHTML = `
     ${renderHeader(dayNumber)}
+    ${renderStartDateRow(attempt)}
     ${renderStats(streak)}
     ${renderScheduleCard(today)}
     ${renderChecklist(rec, currentBook)}
@@ -454,6 +478,29 @@ function render() {
     ${renderRemindersCard()}
     ${renderResetButton()}
     ${renderModal()}
+  `;
+}
+
+function renderNotStartedScreen(attempt, dayNumber) {
+  const daysUntil = 1 - dayNumber;
+  return `
+    <div class="header"><div class="title">75 Hard</div></div>
+    <div class="card" style="text-align:center">
+      <h2 style="text-transform:none;color:var(--text);font-size:18px">Not started yet</h2>
+      <p style="margin-top:8px">Day 1 is set for <strong>${attempt.startDate}</strong> — that's ${daysUntil} day${daysUntil === 1 ? "" : "s"} from now.</p>
+      <button class="btn btn-ghost btn-block" style="margin-top:14px" data-action="open-set-start-date">Change Day 1 date</button>
+    </div>
+    ${renderScheduleCard(scheduleForDate(new Date()))}
+    ${renderModal()}
+  `;
+}
+
+function renderStartDateRow(attempt) {
+  if (attemptHasProgress(attempt)) return "";
+  return `
+    <div class="item-sub" style="margin:-10px 0 16px;text-align:right">
+      Day 1: ${attempt.startDate} · <button class="link-btn" data-action="open-set-start-date">change</button>
+    </div>
   `;
 }
 
@@ -709,6 +756,24 @@ function renderModal() {
             <button class="btn btn-primary btn-block" data-action="add-book-submit">Add book</button>
           </div>
           <button class="btn btn-secondary btn-block" style="margin-top:10px" data-action="close-modal">Done</button>
+        </div>
+      </div>
+    `;
+  }
+
+  if (m.type === "set-start-date") {
+    const attempt = getCurrentAttempt();
+    return `
+      <div class="modal-overlay" data-action="close-modal">
+        <div class="modal-box">
+          <h2>Set Day 1 date</h2>
+          <p>Choose the calendar date that should count as Day 1 of this attempt.</p>
+          <label style="margin-top:12px">Day 1 date</label>
+          <input type="date" id="start-date-input" value="${attempt.startDate}" />
+          <div class="modal-actions">
+            <button class="btn btn-secondary" data-action="close-modal">Cancel</button>
+            <button class="btn btn-primary" data-action="save-start-date">Save</button>
+          </div>
         </div>
       </div>
     `;
